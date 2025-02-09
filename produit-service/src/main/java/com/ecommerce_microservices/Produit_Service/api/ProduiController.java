@@ -60,6 +60,7 @@ public class ProduiController {
         try {
             productDTO productDTO = new productDTO();
             productDTO.setType(type);
+             System.out.println("type" + type);
             productDTO.setTitre(titre);
             productDTO.setReference(reference);
             productDTO.setDescription(description);
@@ -68,6 +69,7 @@ public class ProduiController {
             productDTO.setImageFile(file);
 
             Produit savedProduct = produitService.saveProduit(productDTO);
+            System.out.println("productDTO" + productDTO);
             return ResponseEntity.ok("Produit créé avec succès ! Image URL: " + savedProduct.getImagepath());
         } catch (IOException e) {
             e.printStackTrace(); // Print detailed error in logs

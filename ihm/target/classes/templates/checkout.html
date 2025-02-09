@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!-- <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +6,9 @@
     <title>Validation du panier</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body>-->
 
-    <!-- ✅ Navigation Menu -->
+    <!-- ✅ Navigation Menu  
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/produits">Lola Shop</a>
@@ -23,15 +23,20 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>-->
 
-    <!-- ✅ Confirmation Message -->
+    <!-- ✅ Confirmation Message
     <div class="container text-center mt-5">
         <h1 class="text-success">Merci pour votre achat ! 🎉</h1>
         <p class="lead">Votre commande a été validée avec succès. Nous espérons vous revoir bientôt !</p>
     </div>
-
-    <!-- ✅ Order Summary -->
+  <div>
+            <p><strong>Nom du Client:</strong> <span th:text="${client.prenom}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${client.email}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></p>
+        </div>-->
+        
+    <!-- ✅ Order Summary 
     <div class="container mt-4">
         <div class="card p-4 shadow-lg">
             <h3 class="text-center">Résumé de votre commande</h3>
@@ -48,12 +53,132 @@
         </div>
        
     </div>
-    
+      <div class="total-section">
+            <p>Total Facture: <span th:text="${totalInvoice}"></span> €</p>
+        </div>-->
 
-    <!-- ✅ Buttons -->
+    <!-- ✅ Buttons 
     <div class="container text-center mt-4">
         <a href="/produits/download-pdf" class="btn btn-primary btn-lg me-2">📄 Télécharger la facture</a>
         <a href="/produits" class="btn btn-outline-success btn-lg">🛍️ Continuer mes achats</a>
+    </div>
+
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Facture - Checkout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .invoice-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .total-section {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/produits">Lola Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!--  <ul class="navbar-nav ms-auto">
+                  <li class="nav-item"><a class="nav-link active" href="/produits">Accueil</a></li>
+                       <li class="nav-item"><a class="nav-link" href="/produits/cart">Mon panier</a></li>
+                         <li class="nav-item"><a class="nav-link" href="/clients/login">Se connecter</a></li>
+                </ul>-->
+                 <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/produits">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/produits/cart">My Cart</a></li>
+                
+                <!-- Conditional display based on if client is logged in -->
+                <li class="nav-item" th:if="${client != null}">
+                    <span class="nav-link">Welcome, <span th:text="${client.prenom}">Username</span></span> <!-- Display client's name -->
+                </li>
+
+                <!-- Show 'Create Product' link if client is logged in -->
+                <li class="nav-item" th:if="${client != null}">
+                    <a class="nav-link" href="/produits/create">Create product</a> <!-- Only visible if logged in -->
+                </li>
+
+                <!-- Show login link if client is not logged in -->
+                <li class="nav-item" th:if="${client == null}">
+                    <a class="nav-link" href="/clients/login">Se connecter</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="invoice-container">
+       <div class="container text-center mt-5">
+        <h1 class="text-success">Merci pour votre achat ! 🎉</h1>
+        <p class="lead">Votre commande a été validée avec succès. Nous espérons vous revoir bientôt !</p>
+    </div>
+        <hr>
+
+        <!-- ✅ Client Information  -->
+        <div>
+            
+            <p><strong>Nom du Client:</strong> <span th:text="${client.nom}"></span></p>
+            <p><strong>Adresse:</strong> <span th:text="${client.description}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></p>
+        </div>
+
+        <hr>
+
+        <!-- ✅ Invoice Table -->
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire (€)</th>
+                    <th>Total (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="commande : ${commandes}">
+                    <td th:text="${commande.produit.titre}"></td>
+                    <td th:text="${commande.quantity}"></td>
+                    <td th:text="${commande.produit.prix}"></td>
+                    <td th:text="${commande.prixTotal}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ✅ Total Invoice Amount -->
+        <div class="total-section">
+            <p>Total Facture: <span th:text="${totalInvoice}"></span> €</p>
+        </div>
+
+        <hr>
+
+        <!-- ✅ Buttons -->
+        <div class="text-center">
+               <a href="/produits/download-pdf" class="btn btn-primary btn-lg me-2">📄 Télécharger la facture</a>
+            <a href="/produits" class="btn btn-secondary">Retour à la Boutique</a>
+        </div>
     </div>
 
 </body>

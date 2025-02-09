@@ -18,7 +18,15 @@
 			    font-size: 15px;
 			    font-weight: 400;
 			    margin-top: 18px;
+			    color:black;
 			}
+			a.btndetails {
+    background-color: #ff5722;
+    padding: 6px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+}
 			.card-prix{
 			font-size: 20px;
 			font-weight: 500;
@@ -57,6 +65,8 @@
     object-fit: cover;
     width: 47%;
     align-self: anchor-center;
+    margin-top: 27px;
+        margin-bottom: 49px;
 }
         .hero {
             height: 500px;
@@ -82,11 +92,30 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <!--  <ul class="navbar-nav ms-auto">
                   <li class="nav-item"><a class="nav-link active" href="/produits">Accueil</a></li>
                        <li class="nav-item"><a class="nav-link" href="/produits/cart">Mon panier</a></li>
                          <li class="nav-item"><a class="nav-link" href="/clients/login">Se connecter</a></li>
-                </ul>
+                </ul>-->
+                 <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/produits">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/produits/cart">My Cart</a></li>
+                
+                <!-- Conditional display based on if client is logged in -->
+                <li class="nav-item" th:if="${client != null}">
+                    <span class="nav-link">Welcome, <span th:text="${client.nom}">Username</span></span> <!-- Display client's name -->
+                </li>
+
+                <!-- Show 'Create Product' link if client is logged in -->
+                <li class="nav-item" th:if="${client != null}">
+                    <a class="nav-link" href="/produits/create">Create product</a> <!-- Only visible if logged in -->
+                </li>
+
+                <!-- Show login link if client is not logged in -->
+                <li class="nav-item" th:if="${client == null}">
+                    <a class="nav-link" href="/clients/login">Sign in</a>
+                </li>
+            </ul>
             </div>
         </div>
     </nav>
@@ -167,9 +196,9 @@
                 <div class="card-body">
                 <h5 class="card-title" th:text="${produit.titre}"></h5>
                    <h5 style="color: #ff5722;"><span class="card-prix" th:text="${produit.prix}"></span> €</h5>
-                     <h5 class="card-desc" th:text="${produit.description}"></h5>
+                    <p class="card-typelabel" > Details : <span class="card-desc" th:text="${produit.description}"></span></p>
                      <p class="card-typelabel" > Type :<span class="card-type" th:text="${produit.type}"></span></p>
-                     <a th:href="@{/produits/{produitId}(produitId=${produit.produitId})}">More details</a>
+                     <a class="btndetails" th:href="@{/produits/{produitId}(produitId=${produit.produitId})}">More details</a>
                     
                 </div>
             </div>

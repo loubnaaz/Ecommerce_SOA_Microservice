@@ -11,6 +11,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,14 +27,28 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.WebAppService.ecommerce.Model.Client;
 import com.WebAppService.ecommerce.Model.Commande;
 import com.WebAppService.ecommerce.Model.Produit;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;/*
 import com.lowagie.text.Document;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfWriter;*/
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
+
 
 import jakarta.servlet.http.HttpSession;
 
@@ -95,14 +110,14 @@ public class ProduitsController {
     // ✅ Create a product with an image
     @PostMapping("/save")
     public String saveProduct(
-            @RequestParam("type") String type,
+            @RequestParam("type") String type,      
             @RequestParam("titre") String titre,
             @RequestParam("reference") int reference,
             @RequestParam("description") String description,
             @RequestParam("prix") int prix,
             @RequestParam("quantity") int quantity,
             @RequestParam("file") MultipartFile file) throws IOException {
-
+    	 System.out.println("typeihm dd" + type);
         String apiUrl = PRODUCT_SERVICE_URL + "/create";
 
         HttpHeaders headers = new HttpHeaders();
@@ -114,12 +129,13 @@ public class ProduitsController {
         body.add("reference", reference);
         body.add("description", description);
         body.add("prix", prix);
-        
+        System.out.println("typeihm" + type);
         body.add("quantity", quantity);
         
         body.add("file", file.getResource()); // Attach image
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        
 
         try {
             restTemplate.postForEntity(apiUrl, requestEntity, String.class);
@@ -265,16 +281,149 @@ public class ProduitsController {
 
         if (client == null) {
         	System.out.println("client n est pas connecté");
+        	
             return "login"; // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
         } else {
         	System.out.println("client est connecté");
         }
-        model.addAttribute("client", client);
-        return "checkout"; // Afficher la page checkout.html si connecté
-    }
 
+        // Retrieve the list of commandes (orders) from the session
+        List<Commande> commandes = (List<Commande>) session.getAttribute("commandes");
+        if (commandes == null || commandes.isEmpty()) {
+            model.addAttribute("errorMessage", "No products in the cart");
+            return "checkout"; // Show an error message if the cart is empty
+        }
+
+        // Calculate the total price of the cart
+        double totalInvoice = 0;
+        for (Commande commande : commandes) {
+            totalInvoice += commande.getPrixTotal();
+        }
+
+        // Add client, commandes, and total to the model
+        model.addAttribute("client", client);
+        model.addAttribute("commandes", commandes);
+        model.addAttribute("totalInvoice", totalInvoice); // Total of the invoice
+        model.addAttribute("client", client);
+        
+        
+        return "checkout"; // Afficher la page checkout.html si connecté
+    } 
+    /*
+    @GetMapping("/checkout") 
+    public String checkout(HttpSession session, Model model) {
+        // Vérifier si le client est connecté
+        Client client = (Client) session.getAttribute("client"); 
+        if (client == null) {
+            System.out.println("Client non connecté, redirection vers login.");
+            return "login"; // Redirige vers la page de connexion
+        } 
+
+        System.out.println("Client connecté: " + client.getNom());
+
+        // Récupérer les produits du panier depuis la session
+        List<Commande> cart = (List<Commande>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        // Calcul du total de la facture
+        double totalInvoice = cart.stream()
+                                  .mapToDouble(commande -> commande.getPrixTotal())
+                                  .sum();
+
+        // Ajouter les informations au modèle
+        model.addAttribute("client", client);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalInvoice", totalInvoice);
+        
+System.out.println("totalInvoice" + totalInvoice);
+        return "checkout"; // Afficher la page checkout.html avec les détails
+    }
+*/
 
     @GetMapping("/download-pdf")
+    public ResponseEntity<byte[]> generatePdf(HttpSession session) {
+        try {
+            // Retrieve the client from the session
+            Client client = (Client) session.getAttribute("client");
+            if (client == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+            // Retrieve the list of commandes (assuming stored in session)
+            List<Commande> commandes = (List<Commande>) session.getAttribute("commandes");
+            if (commandes == null || commandes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+            // Create the PDF document
+            Document document = new Document();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            // ✅ 1. Add Invoice Title
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            Paragraph title = new Paragraph("Facture N° 123", titleFont);
+            
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph("\n"));
+
+            // ✅ 2. Add Client Information
+            Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+            document.add(new Paragraph("Informations Client:", boldFont));
+            document.add(new Paragraph("Nom: " + client.getNom()));
+            document.add(new Paragraph("Prenom: " + client.getPrenom()));
+            document.add(new Paragraph("Email: " + client.getEmail()));
+            document.add(new Paragraph("Adresse: " + client.getDescription()));
+            document.add(new Paragraph("\n"));
+
+            // ✅ 3. Add Order Details (Table)
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+            table.setWidths(new float[]{3, 1, 2, 2});
+
+            // Table headers
+            table.addCell(new PdfPCell(new Phrase("Produit", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Quantité", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Prix unitaire", boldFont)));
+            table.addCell(new PdfPCell(new Phrase("Prix Total", boldFont)));
+
+            double total = 0;
+            for (Commande commande : commandes) {
+                table.addCell(commande.getProduit().getTitre());
+                table.addCell(String.valueOf(commande.getQuantity()));
+                table.addCell(String.format("%.2f €", commande.getProduit().getPrix()));
+                table.addCell(String.format("%.2f €", commande.getPrixTotal()));
+                total += commande.getPrixTotal();
+            }
+            document.add(table);
+
+            // ✅ 4. Add Total Price
+            document.add(new Paragraph("\n"));
+            Paragraph totalParagraph = new Paragraph("Total de la facture: " + String.format("%.2f €", total), boldFont);
+            totalParagraph.setAlignment(Element.ALIGN_RIGHT);
+            document.add(totalParagraph);
+
+            // Close the document
+            document.close();
+
+            // Prepare the response
+            byte[] pdfBytes = out.toByteArray();
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=facture.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdfBytes);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    } 
+
+   /* @GetMapping("/download-pdf")
     public ResponseEntity<byte[]> generatePdf() {
         try {
             // Création du document PDF
@@ -322,6 +471,6 @@ public class ProduitsController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
-    }
+    }*/
 
 }

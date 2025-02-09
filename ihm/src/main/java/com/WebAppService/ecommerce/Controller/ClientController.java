@@ -1,13 +1,18 @@
 package com.WebAppService.ecommerce.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.WebAppService.ecommerce.Model.Client;
 import com.WebAppService.ecommerce.Model.LoginRequest;
 
 import ch.qos.logback.core.model.Model;
@@ -19,7 +24,17 @@ public class ClientController {
 
     private final String CLIENT_SERVICE_URL = "http://localhost:8081/clients"; 
     private final RestTemplate restTemplate = new RestTemplate();
+    
 
+   
+
+   /* @Autowired
+    public ClientController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }*/
+
+  
+    
     /*@PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
     	System.out.println("************** login ****************");

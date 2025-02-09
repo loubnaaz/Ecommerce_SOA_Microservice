@@ -52,9 +52,9 @@
 			    font-weight: 500;
 			}	
 			.card-desc {
-   
-			    font-size: 19px;
-			    font-weight: 500;
+      color:black;
+			    font-size: 18px;
+			    font-weight: 400;
 			}
 			.card-prix{
 			font-size: 30px;
@@ -84,7 +84,15 @@
    
 			    font-size: 17px;
 			    font-weight: 400;
+				color:black;
 			}
+			a.btndetails {
+    background-color: #ff5722;
+    padding: 6px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+}
 			.card-prix1{
 			font-size: 20px;
 			font-weight: 500;
@@ -142,16 +150,17 @@
               <form th:action="@{/produits/add-to-cart/{produitId}(produitId=${produit.produitId})}" method="post" style="width:50%">
                <div class="col-md-6 product-details">
                <p><span class="card-titre" th:text="${produit.titre}"></span></p>
-                <p><span class="card-desc" th:text="${produit.description}"></span></p>
+               <p class="card-typelabel" > Details :<span class="card-desc" th:text="${produit.description}"></span></p>
+                
                   <p class="card-typelabel" > Type :<span class="card-type" th:text="${produit.type}"></span></p>
-                    <p class="card-typelabel" > Référence :<span class="card-type" th:text="${produit.reference}"></span></p>
+                    <p class="card-typelabel" > Reference :<span class="card-type" th:text="${produit.reference}"></span></p>
                 
                 <h4><strong> <span class="card-prix" th:text="${produit.prix}"></span> €</strong></h4>
                 
               
                <p class="card-type" > Quantity <input class="form-control" type="text" th:value="${produit.quantity}" id="quantity" name="quantity" /><span> 
                 </div>
-			    <button type="submit" class="buy-btn">Ajouter au panier</button>
+			    <button type="submit" class="buy-btn">Add to Cart</button>
 			</form>
 			
 			
@@ -169,9 +178,9 @@
                 <div class="card-body">
                 <h5 class="card-titre1" th:text="${produit.titre}"></h5>
                    <h5><span class="card-prix1" th:text="${produit.prix}"></span> €</h5>
-                     <h5 class="card-desc1" th:text="${produit.description}"></h5>
+                    <p class="card-typelabel" > Details :  <span class="card-desc1" th:text="${produit.description}"></span></p>
                      <p class="card-typelabel1" > Type :<span class="card-type" th:text="${produit.type}"></span></p>
-                     <a th:href="@{/produits/{produitId}(produitId=${produit.produitId})}">More details</a>
+                       <a class="btndetails"  th:href="@{/produits/{produitId}(produitId=${produit.produitId})}">More details</a>
                     
                 </div>
             </div>

@@ -1,9 +1,13 @@
 package com.WebAppService.ecommerce.Controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.WebAppService.ecommerce.Model.Client;
@@ -47,5 +51,20 @@ public class AuthController {
         	
         }
         return "register"; // Rediriger vers la page de login en cas d'échec
+    }
+    
+    // ✅ Register a new client via client microservice
+    @PostMapping("/register")
+    public ResponseEntity<String> registerClient(@RequestBody Client client) {
+        String apiUrl = CLIENT_SERVICE_URL + "/register"; // client-service URL
+
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(apiUrl, client, String.class);
+            return ResponseEntity.ok(response.getBody());
+        } catch (HttpClientErrorException.Conflict e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering client");
+        }
     }
 }

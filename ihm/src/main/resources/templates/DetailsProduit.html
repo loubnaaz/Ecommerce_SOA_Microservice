@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        /* Custom styles */
+     
         .product-container {
             display: flex;
             align-items: center;
@@ -119,7 +119,6 @@
 </head>
 <body>
 
-    <!-- ✅ Navigation Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/produits">Lola Store</a>
@@ -136,7 +135,7 @@
         </div>
     </nav>
 
-    <!-- ✅ Product Details Section -->
+    
     <div class="product-container">
         <div class="row" style="width: 100%;">
             <!-- Image Column -->
@@ -145,7 +144,7 @@
                
             </div>
 
-            <!-- Details Column -->
+         
             
               <form th:action="@{/produits/add-to-cart/{produitId}(produitId=${produit.produitId})}" method="post" style="width:50%">
                <div class="col-md-6 product-details">
@@ -171,7 +170,7 @@
 <section id="produits" class="container my-5">
  
     <div class="row">
-        <!-- Thymeleaf Loop -->
+      
         <div class="col-md-4" th:each="produit : ${produits}">
             <div class="card mb-4">
                 <img  th:src="${produit.imagepath}" class="card-img-top" th:alt="${produit.type}">

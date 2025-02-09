@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Produit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* Custom styles */
+        .product-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+       /* .product-image:hover {
+            transform: scale(1.5); 
+        }*/
+
+.product-details {
+   
+    width: 90%;
+}
+
+        .buy-btn {
+            background-color: #ff5722;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-top:15px;
+        }
+
+        .buy-btn:hover {
+            background-color: #e64a19;
+        }
+        
+        .card-titre {
+   
+			    font-size: 25px;
+			    font-weight: 500;
+			}	
+			.card-desc {
+   
+			    font-size: 19px;
+			    font-weight: 500;
+			}
+			.card-prix{
+			font-size: 30px;
+			font-weight: 500;
+			}
+			.form-control{
+			width:15%;
+			}
+			.card-type {
+   color:black;
+			    font-size: 15px;
+			    font-weight: 400;
+			}
+			
+			.card-typelabel {
+   				color:grey;
+			    font-size: 16px;
+			    font-weight: 400;
+			}
+			
+			 .card-titre1 {
+   
+			    font-size: 18px;
+			    font-weight: 500;
+			}	
+			.card-desc1 {
+   
+			    font-size: 17px;
+			    font-weight: 400;
+			}
+			.card-prix1{
+			font-size: 20px;
+			font-weight: 500;
+			}
+			
+			.card-type1 {
+   				color:black;
+			    font-size: 14px;
+			    font-weight: 400;
+			}
+			
+			.card-typelabel1 {
+   				color:grey;
+			    font-size: 15px;
+			    font-weight: 400;
+			}
+			
+			
+			 .card-img-top {
+    width: 56%;
+    align-self: center;
+}
+    </style>
+</head>
+<body>
+
+    <!-- ✅ Navigation Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/produits">Lola Store</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+               <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/produits">Accueil</a></li>
+                       <li class="nav-item"><a class="nav-link" href="/produits/cart">Mon panier</a></li>
+                         <li class="nav-item"><a class="nav-link" href="/clients/login">Se connecter</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ✅ Product Details Section -->
+    <div class="product-container">
+        <div class="row" style="width: 100%;">
+            <!-- Image Column -->
+            <div class="col-md-6 text-center">
+                <img th:src="@{${produit.imagepath}}" alt="Product Image" class="w-69 h-100 object-fit-cover" >
+               
+            </div>
+
+            <!-- Details Column -->
+            
+              <form th:action="@{/produits/add-to-cart/{produitId}(produitId=${produit.produitId})}" method="post" style="width:50%">
+               <div class="col-md-6 product-details">
+               <p><span class="card-titre" th:text="${produit.titre}"></span></p>
+                <p><span class="card-desc" th:text="${produit.description}"></span></p>
+                  <p class="card-typelabel" > Type :<span class="card-type" th:text="${produit.type}"></span></p>
+                    <p class="card-typelabel" > Référence :<span class="card-type" th:text="${produit.reference}"></span></p>
+                
+                <h4><strong> <span class="card-prix" th:text="${produit.prix}"></span> €</strong></h4>
+                
+              
+               <p class="card-type" > Quantity <input class="form-control" type="text" th:value="${produit.quantity}" id="quantity" name="quantity" /><span> 
+                </div>
+			    <button type="submit" class="buy-btn">Ajouter au panier</button>
+			</form>
+			
+			
+           
+        </div>
+    </div>
+     <br> <br> <br>
+<section id="produits" class="container my-5">
+ 
+    <div class="row">
+        <!-- Thymeleaf Loop -->
+        <div class="col-md-4" th:each="produit : ${produits}">
+            <div class="card mb-4">
+                <img  th:src="${produit.imagepath}" class="card-img-top" th:alt="${produit.type}">
+                <div class="card-body">
+                <h5 class="card-titre1" th:text="${produit.titre}"></h5>
+                   <h5><span class="card-prix1" th:text="${produit.prix}"></span> €</h5>
+                     <h5 class="card-desc1" th:text="${produit.description}"></h5>
+                     <p class="card-typelabel1" > Type :<span class="card-type" th:text="${produit.type}"></span></p>
+                     <a th:href="@{/produits/{produitId}(produitId=${produit.produitId})}">More details</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

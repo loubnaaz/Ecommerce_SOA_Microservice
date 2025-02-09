@@ -1,0 +1,12 @@
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\api\CartController.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\api\ClientController.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\ClientServiceApplication.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\config\RestTemplateConfig.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\dataaccess\ClientRepository.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\logic\ClientService.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\Cart.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\Client.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\JwtUtil.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\LoginRequest.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\Produit.java
+C:\Users\azrla\eclipse-workspace\client-service\src\main\java\com\ecommerce\Client_Service\model\ProduitDTO.java

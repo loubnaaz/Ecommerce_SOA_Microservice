@@ -1,0 +1,8 @@
+com\WebAppService\ecommerce\Model\Commande.class
+com\WebAppService\ecommerce\Controller\AuthController.class
+com\WebAppService\ecommerce\Model\Client.class
+com\WebAppService\ecommerce\EcommerceApplication.class
+com\WebAppService\ecommerce\Model\LoginRequest.class
+com\WebAppService\ecommerce\Model\Produit.class
+com\WebAppService\ecommerce\Controller\ClientController.class
+com\WebAppService\ecommerce\Controller\ProduitsController.class

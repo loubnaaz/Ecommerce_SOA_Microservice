@@ -1,0 +1,8 @@
+com\ecommerce_microservices\Produit_Service\model\productDTO.class
+com\ecommerce_microservices\Produit_Service\config\RestTemplateConfig.class
+com\ecommerce_microservices\Produit_Service\logic\ProduitService.class
+com\ecommerce_microservices\Produit_Service\model\ProduitType.class
+com\ecommerce_microservices\Produit_Service\api\ProduiController.class
+com\ecommerce_microservices\Produit_Service\ProduitServiceApplication.class
+com\ecommerce_microservices\Produit_Service\dataaccess\ProduitRepository.class
+com\ecommerce_microservices\Produit_Service\model\Produit.class

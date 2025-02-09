@@ -1,0 +1,73 @@
+
+INSERT INTO `produitservice`.`produit` (`prix`, `produit_id`, `quantity`, `reference`, `description`, `titre`, `type`) VALUES ('1', '1', '2', '11', 'hu', 'jiio', 'ELECTRONICS');
+
+INSERT INTO `clientservice`.`client` (`client_id`, `telephone`, `description`, `email`, `nom`, `password`, `prenom`, `ville`) VALUES ('1', '144141414', 'jkjkjk', 'lola@gmail.com', 'lola', '1123', 'hjkhuk', 'yjuyui');
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1>Product List</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Reference</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Action</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="produit : ${produits}">
+                <td th:text="${produit.id}"></td>
+                <td th:text="${produit.type}"></td>
+                <td th:text="${produit.reference}"></td>
+                <td th:text="${produit.description}"></td>
+                
+                <td><a href="/produits/create">Add a new user</a></td>
+             
+            </tr>
+        </tbody>
+    </table>
+    <img src="${produit.imagepath}" alt="Product Image" width="100">22:19
+</body>
+</html>
+
+
+
+
+        <div class="carousel-inner">
+	        <div class="row">
+		        <div class="col-md-6">
+		            <div class="carousel-item active">
+		                
+		                  <img src ="../images/home_deco.png" >
+		               
+		            </div>
+	             </div>
+	             <div class="col-md-6">
+	              <h1>Découvrez Nos Produits</h1>
+	               </div>
+	        </div>
+      	<div class="row">
+			    <div class="col-md-6">
+	            	<div class="carousel-item">
+	               	 <img src "../images/sport.png" >
+	                  
+	               	 </div>
+	           		 </div>
+	           		 <div class="col-md-6">
+	           		   <h1>Qualité & Confiance</h1>
+	           		  </div>
+      			 </div>
+      		 </div>

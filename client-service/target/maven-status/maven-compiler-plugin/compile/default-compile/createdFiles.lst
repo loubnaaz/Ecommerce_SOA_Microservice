@@ -1,0 +1,13 @@
+com\ecommerce\Client_Service\model\LoginRequest.class
+com\ecommerce\Client_Service\model\Cart.class
+com\ecommerce\Client_Service\ClientServiceApplication.class
+com\ecommerce\Client_Service\model\ProduitDTO.class
+com\ecommerce\Client_Service\config\RestTemplateConfig.class
+com\ecommerce\Client_Service\logic\ClientService.class
+com\ecommerce\Client_Service\logic\ClientService$1.class
+com\ecommerce\Client_Service\model\Client.class
+com\ecommerce\Client_Service\api\ClientController.class
+com\ecommerce\Client_Service\api\CartController.class
+com\ecommerce\Client_Service\model\Produit.class
+com\ecommerce\Client_Service\model\JwtUtil.class
+com\ecommerce\Client_Service\dataaccess\ClientRepository.class
